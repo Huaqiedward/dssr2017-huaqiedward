@@ -19,6 +19,11 @@ def conding_length_filter (file_name):
 
 # In[ ]:
 
+
+
+
+# In[ ]:
+
 #This is the script to divide sequences into two groups based on the promoter elements.
 from Bio import SeqIO
 from Bio.Alphabet import IUPAC
@@ -110,6 +115,8 @@ from Bio.SeqRecord import SeqRecord
 from Bio import SeqIO
 from Bio.Alphabet import IUPAC
 
+from EdwardBio import 
+
 def window_30nt (file_name):
     window_records=[] #Create a new blank list for the windows of every sequence
     for rec in SeqIO.parse(file_name, "fasta",IUPAC.unambiguous_dna): #Read a .fasta file and parse one sequence each time
@@ -120,7 +127,19 @@ def window_30nt (file_name):
             window_records.append(window_rec) #Add each window and its description to the list "window_records"
     SeqIO.write(window_records, "window_"+file_name, "fasta") # At last output the list of windows as a new .fasta file
 
-print(x)
 
-x = 10
-y = 10
+# In[ ]:
+
+import pandas as pd
+from pandas import DataFrame
+folding_energy = pd.read_csv('energy_output.csv',index_col=0,header=None)
+#Read a .csv file. "index_col=0" makes the first column the index for each row. "header=None" says there's no colomn index.
+column1=DataFrame(folding_energy.mean(axis=1), columns=['Mean'])
+#Calculate the mean value of each row, add index "Mean" on top of this column and save it to a variable as a DataFrame
+column2=DataFrame(folding_energy.std(axis=1), columns=['STD'])
+#Calculate the mean value of each row, add index "STD" on top of this column and save it to a variable as a DataFrame
+column=pd.concat([column1, column2], axis=1)
+#Concatenate the above two columns together
+column.to_csv('energy_statistaics.csv')
+#write the result as a new .csv file.
+
